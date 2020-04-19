@@ -1,0 +1,17 @@
+{
+  "name": "reviewer",
+  "displayName": "reviewer",
+  "expo": {
+    "name": "reviewer",
+    "slug": "reviewer",
+    "version": "1.0.0",
+    "platforms": [
+      "ios",
+      "android",
+      "web"
+    ],
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
