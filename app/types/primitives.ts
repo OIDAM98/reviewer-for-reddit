@@ -9,7 +9,8 @@ export type Post = {
     comments: number,
     is_sticky: boolean,
     subreddit: string,
-    permalink: string // Link to Reddit of this post
+    permalink: string, // Link to Reddit of this post
+    saved: boolean
 }
 
 export type Thumbnail = {

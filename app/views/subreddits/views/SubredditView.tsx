@@ -1,5 +1,5 @@
 import { Subreddit } from '../../../types/primitives'
-import { SubredditsProps } from '../../../types/navigation';
+import { SubredditsProps, SubredditsState } from '../../../types/navigation';
 import { sub_styles, defaults } from '../../../views/styles';
 
 import React from 'react';
@@ -7,11 +7,6 @@ import SearchForm from './SearchForm'
 import SubredditCell from './SubredditCell'
 
 import { View, FlatList, Button } from 'react-native';
-
-interface SubredditsState {
-    subreddits: Array<Subreddit>,
-    showSearch: boolean
-}
 
 const DEFAUL_SUBS: Array<Subreddit> =
     ['frontpage', 'all', 'funny', 'cooking', 'aww', 'nextfuckinglevel', 'beamazed', 'programming']
@@ -37,7 +32,11 @@ export default class SubredditsView extends React.Component<SubredditsProps, Sub
     }
 
     // Function to load subreddits into the list, creating cell for each one
-    renderSubreddit = (item: Subreddit) => <SubredditCell name={item.name} navigation={this.props.navigation} />
+    renderSubreddit = (item: Subreddit) => <SubredditCell
+        name={item.name}
+        navigation={this.props.navigation}
+        logged={this.state.logged}
+    />
 
     // Search subreddit in Reddit
     // If found, then add it and notify user
