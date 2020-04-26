@@ -1,5 +1,6 @@
-import { Subreddit } from '../Subreddit'
-import { styles } from '../../../views/styles';
+import { Subreddit } from '../../../types/primitives'
+import { SubredditsProps } from '../../../types/navigation';
+import { sub_styles, defaults } from '../../../views/styles';
 
 import React from 'react';
 import SearchForm from './SearchForm'
@@ -7,64 +8,83 @@ import SubredditCell from './SubredditCell'
 
 import { View, FlatList, Button } from 'react-native';
 
-
 interface SubredditsState {
     subreddits: Array<Subreddit>,
-    subredditSearch: string,
     showSearch: boolean
 }
 
-let id = 2
-export default class SubredditsView extends React.Component<{}, SubredditsState> {
+const DEFAUL_SUBS: Array<Subreddit> =
+    ['frontpage', 'all', 'funny', 'cooking', 'aww', 'nextfuckinglevel', 'beamazed', 'programming']
+        .map(name => ({ name }))
+
+export default class SubredditsView extends React.Component<SubredditsProps, SubredditsState> {
     state = {
-        subreddits: [{ id: 1, name: 'Scala' }, { id: 2, name: 'Funny' }],
-        subredditSearch: '',
+        logged: false,
+        subreddits: [],
         showSearch: false
     }
 
-    showSubreddits = ({ item }: any) => <SubredditCell {...(item)} />
+    // Load user's subreddits or load defaults
+    componentDidMount() {
+        if (this.state.logged) {
+            // Fetch subreddits from the DB
 
-    handleSubredditChange = (sub: string) => {
-        this.setState({ subredditSearch: sub })
-    }
-
-    searchSubreddit = (name: string | undefined) => {
-        if (name) {
-            id++
-            this.addSubreddit({ id, name })
+        }
+        else {
+            //const subreddits 
+            this.setState({ subreddits: DEFAUL_SUBS })
         }
     }
 
+    // Function to load subreddits into the list, creating cell for each one
+    renderSubreddit = (item: Subreddit) => <SubredditCell name={item.name} navigation={this.props.navigation} />
+
+    // Search subreddit in Reddit
+    // If found, then add it and notify user
+    // Else, notify it couldn't be added
+    handleSubreddit = (name: string | undefined) => {
+        if (name) {
+            this.addSubreddit({ name })
+        }
+    }
+
+    // Add subreddit to the list
     addSubreddit = (sub: Subreddit) => {
-        id++
         this.setState({
             showSearch: false,
             subreddits: [...(this.state.subreddits), sub]
         })
     }
 
+    // Show search form
     toggleSearch = () => {
         this.setState({ showSearch: true })
     }
 
-    cancelSearch = () => {
+    // Hide search form
+    hideSearch = () => {
         this.setState({ showSearch: false })
     }
 
     render() {
-        if (this.state.showSearch) return <SearchForm
-            searchSubreddit={this.searchSubreddit}
-            cancelSearch={this.cancelSearch}
-        />
+        // Show search form if needed
+        if (this.state.showSearch)
+            return <SearchForm
+                searchSubreddit={this.handleSubreddit}
+                cancelSearch={this.hideSearch}
+            />
+        // Show list of subreddits
         return (
-            <View style={styles.all}>
-                <FlatList style={[styles.all, styles.subreddits]}
+            <View style={defaults.all}>
+                <FlatList style={sub_styles.list}
                     key={'subs'}
-                    renderItem={this.showSubreddits}
+                    renderItem={(obj) => this.renderSubreddit(obj.item)}
                     data={this.state.subreddits}
-                    keyExtractor={(item) => item.id.toString()}
+                    keyExtractor={(item: Subreddit) => item.name}
                 />
-                <Button title='Add subreddit' onPress={this.toggleSearch} />
+                <View style={sub_styles.options_container}>
+                    <Button title='Add subreddit' onPress={this.toggleSearch} />
+                </View>
             </View>
         )
     }

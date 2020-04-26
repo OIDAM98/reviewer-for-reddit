@@ -1,15 +1,19 @@
-import { styles } from '../../styles';
-import { Text, View } from 'react-native';
-import {Subreddit} from '../Subreddit'
-
+import { Button } from 'react-native';
+import { SubredditsNavProps } from '../../../types/navigation';
 import React from 'react';
 
+type Props = {
+    name: string,
+    navigation: SubredditsNavProps
+}
 
-const SubredditCell = ({ id, name }: Subreddit) => {
-    return (<View style={[styles.all, styles.subreddit]}>
-        <Text style={styles.text}>{id}</Text>
-        <Text style={styles.text}>{name}</Text>
-    </View>)
+const SubredditCell = ({name, navigation}: Props) => {
+    const showList = () => {
+        navigation.navigate('Posts', {
+            currentSub: name
+        })
+    }
+    return (<Button title={name} onPress={showList}/>)
 }
 
 export default SubredditCell

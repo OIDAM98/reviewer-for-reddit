@@ -1,6 +1,7 @@
 import React from 'react';
 import { Text, View, Button, ActivityIndicator, TextInput, KeyboardAvoidingView, Alert } from 'react-native';
-import { styles } from '../../styles';
+import { sub_styles } from '../../styles';
+import { Separator } from '../../Separator';
 
 interface SearchState {
   toSearch: string,
@@ -10,7 +11,7 @@ interface SearchState {
 
 interface SearchProps {
   searchSubreddit: Function,
-  cancelSearch: Function
+  cancelSearch: Function,
 }
 
 export default class SearchForm extends React.Component<SearchProps, SearchState> {
@@ -66,18 +67,23 @@ export default class SearchForm extends React.Component<SearchProps, SearchState
 
   render() {
     return (
-      <KeyboardAvoidingView style={[styles.all, styles.searchContainer]}>
+      <KeyboardAvoidingView style={sub_styles.searchContainer}>
         <Text>This subreddit will be seached in the Reddit platform</Text>
+        <View style={{ margin: 10 }} />
         <TextInput
-          style={styles.searchText}
+          style={sub_styles.searchText}
           onChangeText={this.subredditChanged}
           value={this.state.toSearch} />
-        <View style={[styles.progress, styles.progress, { opacity: this.state.showProgress ? 100 : 0 }]} >
+        <View style={[sub_styles.progress, sub_styles.progress, { opacity: this.state.showProgress ? 100 : 0 }]} >
           <Text>Searching...</Text>
           <ActivityIndicator color="#0000ff" />
         </View>
-        <Button title="Search for subreddit" onPress={this.handleSubmit} />
-        <Button title="Cancel" onPress={this.handleCancel} />
+        <Separator />
+        <View style={sub_styles.options_container}>
+          <Button title="Search for subreddit" onPress={this.handleSubmit} />
+          <View style={{ margin: 10 }} />
+          <Button title="Cancel" onPress={this.handleCancel} />
+        </View>
       </KeyboardAvoidingView>
     )
   }

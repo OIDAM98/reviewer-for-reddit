@@ -1,24 +1,36 @@
 import { StyleSheet } from 'react-native'
 import Constants from 'expo-constants';
 
-
-export const styles = StyleSheet.create({
+export const defaults = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: Constants.statusBarHeight,
     backgroundColor: '#fff',
     justifyContent: 'center',
   },
+  separator: {
+    marginVertical: 8,
+    borderBottomColor: '#737373',
+    borderBottomWidth: StyleSheet.hairlineWidth,
+  },
   all: {
     flex: 1
-  },
-  subreddits: {
+  }
+});
+
+export const sub_styles = StyleSheet.create({
+  list: {
+    flex: 1,
     backgroundColor: 'gray'
   },
-  subreddit: {
+  cell: {
+    flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'cyan'
+    backgroundColor: 'cyan',
+    justifyContent: 'center',
+    padding: 15,
+    margin: 10
   },
   text: {
     fontSize: 20
@@ -38,8 +50,23 @@ export const styles = StyleSheet.create({
     borderColor: 'cyan'
   },
   searchContainer: {
+    flex: 1,
     padding: 20,
     margin: 10,
     justifyContent: 'center'
+  },
+  options_container: {
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    padding: 10,
+    margin: 10
+  },
+  button_container: {
+    flexDirection: 'column',
+    justifyContent: 'space-between',
   }
 });
+
+export const posts = StyleSheet.create( {
+  
+})

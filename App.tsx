@@ -1,7 +1,11 @@
 import React from 'react';
-import { Text, View } from 'react-native';
-import {styles} from './app/views/styles';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+
 import SubredditsView from './app/views/subreddits/views/SubredditView'
+// import PostsView from './app/views/posts/views/PostsView'
+
+const Stack = createStackNavigator();
 
 export default class App extends React.Component {
 
@@ -11,16 +15,12 @@ export default class App extends React.Component {
 
   render() {
     return (
-      <View style={styles.container}>
-        {
-          (this.state.currentView === 'subreddits') ?
-            <SubredditsView />
-            :
-            <Text>Open up App.tsx to start working on your app!</Text>
-
-        }
-
-      </View>
+      //           <Stack.Screen name="Subreddits" component={PostsView} />
+      <NavigationContainer>
+        <Stack.Navigator>
+          <Stack.Screen name="Subreddits" component={SubredditsView} />
+        </Stack.Navigator>
+      </NavigationContainer>
     );
   }
 }
