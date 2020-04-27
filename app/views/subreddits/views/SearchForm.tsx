@@ -67,11 +67,11 @@ export default class SearchForm extends React.Component<SearchProps, SearchState
 
   render() {
     return (
-      <KeyboardAvoidingView style={sub_styles.searchContainer}>
+      <KeyboardAvoidingView style={sub_styles.search_container}>
         <Text>This subreddit will be seached in the Reddit platform</Text>
         <View style={{ margin: 10 }} />
         <TextInput
-          style={sub_styles.searchText}
+          style={sub_styles.search_text}
           onChangeText={this.subredditChanged}
           value={this.state.toSearch} />
         <View style={[sub_styles.progress, sub_styles.progress, { opacity: this.state.showProgress ? 100 : 0 }]} >

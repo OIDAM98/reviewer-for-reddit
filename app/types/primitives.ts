@@ -1,6 +1,7 @@
 export type Post = {
     img: string | undefined, // URL of post, may not contain one
-    thumbnail: Thumbnail | undefined // Preview of post
+    thumbnail: Thumbnail | undefined // Preview of post,
+    name: string,
     title: string,
     author: string,
     selftext: string, // Text of post 

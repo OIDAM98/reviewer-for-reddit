@@ -21,16 +21,16 @@ const PostInfo = ({ post, navigation }: Props) => {
     }
     return (
         <TouchableOpacity onPress={showPostInfo}>
-            <View>
-                <Text>{title}</Text>
-                <View>
-                    <Text>{'/u/' + author}</Text>
-                    <Text>{submition}</Text>
-                    <Text>{subreddit}</Text>
+            <View style={posts.content}>
+                <Text style={posts.title}>{title}</Text>
+                <View style={[posts.info, posts.distribute_content]}>
+                    <Text style={posts.info_text}>{'/u/' + author}</Text>
+                    <Text style={posts.info_text}>published: {submition.toDateString()}</Text>
+                    <Text style={posts.info_text}>/r/{subreddit}</Text>
                 </View>
-                <View>
-                    <Text>{comments}</Text>
-                    <Text>{upvotes}</Text>
+                <View style={[posts.info, posts.distribute_content]}>
+                    <Text style={posts.info_text}>{comments} comments</Text>
+                    <Text style={posts.info_text}>{upvotes} score</Text>
                 </View>
             </View>
 
@@ -45,7 +45,7 @@ const PostCell = ({ post, navigation }: Props) => {
         const width = post.thumbnail?.width
         const height = post.thumbnail?.height
         return (
-            <View>
+            <View style={posts.with_image}>
                 <Image
                     source={{ uri: post.thumbnail?.img }}
                     style={{ width, height }}

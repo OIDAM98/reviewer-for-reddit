@@ -3,7 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import SubredditsView from './app/views/subreddits/views/SubredditView'
-// import PostsView from './app/views/posts/views/PostsView'
+import PostsView from './app/views/posts/views/PostsView'
 
 const Stack = createStackNavigator();
 
@@ -15,10 +15,13 @@ export default class App extends React.Component {
 
   render() {
     return (
-      //           <Stack.Screen name="Subreddits" component={PostsView} />
       <NavigationContainer>
         <Stack.Navigator>
           <Stack.Screen name="Subreddits" component={SubredditsView} />
+          <Stack.Screen
+            name="Posts"
+            component={PostsView}
+          />
         </Stack.Navigator>
       </NavigationContainer>
     );

@@ -44,12 +44,12 @@ export const sub_styles = StyleSheet.create({
     justifyContent: 'space-around',
     padding: 10
   },
-  searchText: {
+  search_text: {
     padding: 1,
     borderWidth: 1,
     borderColor: 'cyan'
   },
-  searchContainer: {
+  search_container: {
     flex: 1,
     padding: 20,
     margin: 10,
@@ -67,6 +67,34 @@ export const sub_styles = StyleSheet.create({
   }
 });
 
-export const posts = StyleSheet.create( {
-  
+export const posts = StyleSheet.create({
+  with_image: {
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center"
+  },
+  content: {
+    flex: 4,
+    justifyContent: "center",
+    alignItems: "stretch"
+  },
+  info: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    flexShrink: 0.8
+  },
+  info_text: {
+    fontStyle: "italic",
+    fontSize: 10
+  },
+  title: {
+    fontWeight: "bold",
+    fontSize: 14
+  },
+  indicator: {
+    width: '100%',
+    height: '100%',
+    justifyContent: "center",
+    alignContent: "center"
+  }
 })

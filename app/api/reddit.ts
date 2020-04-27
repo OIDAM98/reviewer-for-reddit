@@ -4,7 +4,9 @@ const baseUrl = 'https://www.reddit.com';
 const jsonPostfix = '.json';
 
 function formatToPost(jsonPost: any): Post {
-    const { title,
+    const {
+        title,
+        name,
         selftext,
         author,
         permalink,
@@ -20,6 +22,7 @@ function formatToPost(jsonPost: any): Post {
         const post: Post = {
             img: undefined,
             thumbnail: undefined,
+            name: name as string,
             title: title as string,
             author: author as string,
             selftext: selftext as string,
@@ -55,6 +58,7 @@ function formatToPost(jsonPost: any): Post {
         const post: Post = {
             img: img,
             thumbnail: thumbnail_obj,
+            name: name as string,
             title: title as string,
             author: author as string,
             selftext: selftext as string,
@@ -72,12 +76,18 @@ function formatToPost(jsonPost: any): Post {
 }
 
 function getPosts(response: any): Array<Post> {
-    const data: Array<any> = response.data
-    return data.map((jsonPost: any) => formatToPost(jsonPost))
+    const data: Array<any> = response.data.children
+    return data
+        .map(json => json.data)
+        .map((jsonPost: any) => formatToPost(jsonPost))
 }
 
-const fetchPosts = async (subreddit: string) => {
-    const response = await fetch(`${baseUrl}/r/${subreddit}/${jsonPostfix}`)
+const fetchPosts = async (subreddit: string, after: string | undefined) => {
+    let url = `${baseUrl}/r/${subreddit}/${jsonPostfix}`
+    if (after != undefined) {
+        url = url + `?after=${after}`
+    }
+    const response = await fetch(url)
     const json = await response.json()
     const posts = getPosts(json)
     return posts

@@ -13,7 +13,7 @@ const DEFAUL_SUBS: Array<Subreddit> =
         .map(name => ({ name }))
 
 export default class SubredditsView extends React.Component<SubredditsProps, SubredditsState> {
-    state = {
+    state: Readonly<SubredditsState> = {
         logged: false,
         subreddits: [],
         showSearch: false

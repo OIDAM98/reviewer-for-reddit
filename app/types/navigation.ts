@@ -19,6 +19,7 @@ export type SubredditsProps = {
 }
 
 export type SubredditsState = {
+    logged: boolean,
     subreddits: Array<Subreddit>,
     showSearch: boolean
 }
@@ -34,6 +35,10 @@ export type PostsProps = {
 }
 
 export type PostsState = {
+    loading: boolean,
+    beginning: boolean,
+    refreshing: boolean,
     currentSub: string,
+    loggedIn: boolean,
     currentPosts: Array<Post>
 }
