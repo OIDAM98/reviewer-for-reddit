@@ -16,7 +16,17 @@ export default class App extends React.Component {
   render() {
     return (
       <NavigationContainer>
-        <Stack.Navigator>
+        <Stack.Navigator
+          screenOptions={{
+            headerStyle: {
+              backgroundColor: 'royalblue'
+            },
+            headerTintColor: 'white',
+            headerTitleStyle: {
+              fontWeight: 'bold'
+            }
+          }}
+        >
           <Stack.Screen name="Subreddits" component={SubredditsView} />
           <Stack.Screen
             name="Posts"

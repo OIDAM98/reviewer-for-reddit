@@ -1,4 +1,4 @@
-import { defaults, posts } from '../../styles';
+import { posts } from '../../styles';
 import { Post } from '../../../types/primitives'
 
 import { Text, View, Image } from 'react-native';
@@ -19,16 +19,20 @@ const PostInfo = ({ post, navigation }: Props) => {
             post: post
         })
     }
+    const time = submition.toLocaleTimeString()
+    const submitionStr = submition.toLocaleDateString() + ' at ' + time.substring(0, time.length - 3)
     return (
         <TouchableOpacity onPress={showPostInfo}>
             <View style={posts.content}>
-                <Text style={posts.title}>{title}</Text>
-                <View style={[posts.info, posts.distribute_content]}>
+                <Text style={[posts.title, { color: is_sticky ? 'steelblue' : 'black' }]}>{title}</Text>
+                <View style={posts.info}>
                     <Text style={posts.info_text}>{'/u/' + author}</Text>
-                    <Text style={posts.info_text}>published: {submition.toDateString()}</Text>
-                    <Text style={posts.info_text}>/r/{subreddit}</Text>
                 </View>
-                <View style={[posts.info, posts.distribute_content]}>
+                <View style={posts.info}>
+                    <Text style={posts.info_text}>/r/{subreddit}</Text>
+                    <Text style={posts.info_text}>published: {submitionStr}</Text>
+                </View>
+                <View style={posts.info}>
                     <Text style={posts.info_text}>{comments} comments</Text>
                     <Text style={posts.info_text}>{upvotes} score</Text>
                 </View>
@@ -41,16 +45,20 @@ const PostInfo = ({ post, navigation }: Props) => {
 
 
 const PostCell = ({ post, navigation }: Props) => {
-    if (post.thumbnail) {
-        const width = post.thumbnail?.width
-        const height = post.thumbnail?.height
+    if (post.thumbnail != undefined) {
+        const width = post.thumbnail?.width * 1.2
+        const height = post.thumbnail?.height * 1.2
         return (
             <View style={posts.with_image}>
-                <Image
-                    source={{ uri: post.thumbnail?.img }}
-                    style={{ width, height }}
-                />
+
                 <PostInfo post={post} navigation={navigation} />
+                <View style={{ alignSelf: "center", paddingTop: 15 }}>
+                    <Image
+                        source={{ uri: post.thumbnail!.img }}
+                        style={{ width, height, }}
+                    />
+
+                </View>
             </View>
         )
     }

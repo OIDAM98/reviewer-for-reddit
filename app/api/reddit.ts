@@ -26,7 +26,7 @@ function formatToPost(jsonPost: any): Post {
             title: title as string,
             author: author as string,
             selftext: selftext as string,
-            submition: new Date(created_utc as number),
+            submition: new Date((created_utc as number) * 1000),
             upvotes: score as number,
             comments: num_comments as number,
             is_sticky: stickied as boolean,
@@ -42,12 +42,14 @@ function formatToPost(jsonPost: any): Post {
         let height: number | undefined = undefined
         let thumb_img: string | undefined = undefined
         if (pre_thumb || pre_thumb !== "self") {
-            width = jsonPost.thumbnail_width as number
-            height = jsonPost.thumbnail_height as number
+            const pre_width = jsonPost.thumbnail_width as number
+            const pre_height = jsonPost.thumbnail_height as number
+            width = !isNaN(pre_width) ? pre_width : undefined
+            height = !isNaN(pre_height) ? pre_height : undefined
             thumb_img = pre_thumb
         }
         let thumbnail_obj: Thumbnail | undefined = undefined
-        if (thumb_img !== undefined) {
+        if (thumb_img && width && height && thumb_img) {
             thumbnail_obj = {
                 width: width!,
                 height: height!,
@@ -62,7 +64,7 @@ function formatToPost(jsonPost: any): Post {
             title: title as string,
             author: author as string,
             selftext: selftext as string,
-            submition: new Date(created_utc as number),
+            submition: new Date((created_utc as number) * 1000),
             upvotes: score as number,
             comments: num_comments as number,
             is_sticky: stickied as boolean,

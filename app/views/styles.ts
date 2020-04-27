@@ -21,19 +21,22 @@ export const defaults = StyleSheet.create({
 export const sub_styles = StyleSheet.create({
   list: {
     flex: 1,
-    backgroundColor: 'gray'
+    backgroundColor: 'lightsteelblue'
   },
   cell: {
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'cyan',
+    backgroundColor: 'royalblue',
     justifyContent: 'center',
-    padding: 15,
-    margin: 10
+    paddingVertical: 10,
+    marginVertical: 10,
+    marginHorizontal: 30
   },
   text: {
-    fontSize: 20
+    fontSize: 15,
+    color: 'white',
+    fontWeight: 'bold'
   },
   progress_one: {
     flex: 1,
@@ -69,27 +72,31 @@ export const sub_styles = StyleSheet.create({
 
 export const posts = StyleSheet.create({
   with_image: {
-    flex: 1,
-    flexDirection: "row",
-    alignItems: "center"
+    padding: 5
   },
   content: {
-    flex: 4,
     justifyContent: "center",
-    alignItems: "stretch"
+    alignItems: "stretch",
   },
   info: {
     flexDirection: "row",
-    justifyContent: "space-between",
-    flexShrink: 0.8
+    alignItems: "center",
+    justifyContent: "flex-start",
+    paddingVertical: 3,
+    paddingHorizontal: 10
   },
   info_text: {
-    fontStyle: "italic",
-    fontSize: 10
+    fontSize: 12,
+    padding: 5,
+    textAlign: "left"
   },
   title: {
     fontWeight: "bold",
-    fontSize: 14
+    fontSize: 16,
+    textAlign: "left",
+    marginTop: 5,
+    marginBottom: 3,
+    marginHorizontal: 10
   },
   indicator: {
     width: '100%',

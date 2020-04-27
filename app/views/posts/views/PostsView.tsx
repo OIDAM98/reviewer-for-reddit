@@ -20,7 +20,7 @@ export default class PostsView extends React.Component<PostsProps, PostsState> {
         currentPosts: []
     }
 
-    componentWillMount() {
+    componentDidMount() {
         this.setState({ loading: true })
         this.props.navigation.setOptions({ title: this.state.currentSub })
         if (this.state.loggedIn) {
