@@ -5,7 +5,8 @@ import { Post, Subreddit } from './primitives'
 export type RootParams = {
     Subreddits: undefined,
     Posts: { currentSub: string, logged: boolean },
-    PostInfo: { post: Post }
+    PostInfo: { post: Post },
+    SearchForm: { searchSubreddit: Function }
 }
 
 // Subreddits View Props and State
@@ -21,7 +22,22 @@ export type SubredditsProps = {
 export type SubredditsState = {
     logged: boolean,
     subreddits: Array<Subreddit>,
-    showSearch: boolean
+}
+
+// Seach From Props and State
+
+export type SearchNavProps = StackNavigationProp<RootParams, 'SearchForm'>
+type SearchRouteProps = RouteProp<RootParams, 'SearchForm'>
+
+export type SearchProps = {
+    route: SearchRouteProps,
+    navigation: SearchNavProps,
+}
+
+export type SearchState = {
+    toSearch: string,
+    showProgress: boolean,
+    validSub: boolean
 }
 
 // Posts View Props and State

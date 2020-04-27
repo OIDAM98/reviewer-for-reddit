@@ -5,6 +5,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import SubredditsView from './app/views/subreddits/SubredditView'
 import PostsView from './app/views/posts/PostsView'
 import PostInfoView from './app/views/post_details/PostInfoView'
+import SearchForm from './app/views/subreddits/SearchForm';
 
 const Stack = createStackNavigator();
 
@@ -31,6 +32,10 @@ export default class App extends React.Component {
           <Stack.Screen
             name="Subreddits"
             component={SubredditsView}
+          />
+          <Stack.Screen 
+            name="SearchForm"
+            component={SearchForm}
           />
           <Stack.Screen
             name="Posts"

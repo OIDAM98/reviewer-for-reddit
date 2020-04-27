@@ -19,7 +19,6 @@ export default class SubredditsView extends React.Component<SubredditsProps, Sub
     state: Readonly<SubredditsState> = {
         logged: false,
         subreddits: [],
-        showSearch: false
     }
 
     // Load user's subreddits or load defaults
@@ -50,6 +49,7 @@ export default class SubredditsView extends React.Component<SubredditsProps, Sub
                 .then(found => {
                     if (found) {
                         this.addSubreddit({ name })
+                        this.props.navigation.pop()
                     }
                     else {
                         Alert.alert(
@@ -82,28 +82,18 @@ export default class SubredditsView extends React.Component<SubredditsProps, Sub
     // Add subreddit to the list
     addSubreddit = (sub: Subreddit) => {
         this.setState({
-            showSearch: false,
             subreddits: [...(this.state.subreddits), sub]
         })
     }
 
     // Show search form
     toggleSearch = () => {
-        this.setState({ showSearch: true })
-    }
-
-    // Hide search form
-    hideSearch = () => {
-        this.setState({ showSearch: false })
+        this.props.navigation.navigate('SearchForm', {
+            searchSubreddit: this.handleSubreddit
+        })
     }
 
     render() {
-        // Show search form if needed
-        if (this.state.showSearch)
-            return <SearchForm
-                searchSubreddit={this.handleSubreddit}
-                cancelSearch={this.hideSearch}
-            />
         // Show list of subreddits
         return (
             <View style={[defaults.all, defaults.color]}>

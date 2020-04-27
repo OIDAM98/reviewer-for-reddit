@@ -1,23 +1,17 @@
 import React from 'react';
 import { Text, View, Button, ActivityIndicator, TextInput, KeyboardAvoidingView, Alert } from 'react-native';
 import { sub_styles } from '../styles';
-
-interface SearchState {
-  toSearch: string,
-  showProgress: boolean,
-  validSub: boolean
-}
-
-interface SearchProps {
-  searchSubreddit: Function,
-  cancelSearch: Function,
-}
+import { SearchProps, SearchState } from '../../types/navigation';
 
 export default class SearchForm extends React.Component<SearchProps, SearchState> {
-  state = {
+  state: Readonly<SearchState> = {
     toSearch: '',
     showProgress: false,
     validSub: false
+  }
+
+  componentDidMount() {
+    this.props.navigation.setOptions({ title: 'Add Subreddit'})
   }
 
   subredditChanged = (toSearch: string) => {
@@ -55,13 +49,13 @@ export default class SearchForm extends React.Component<SearchProps, SearchState
   }
 
   searchSubreddit = () => {
-    this.props.searchSubreddit(this.state.toSearch.trim())
+    this.props.route.params.searchSubreddit(this.state.toSearch.trim())
   }
 
 
   handleCancel = () => {
     this.setState({ showProgress: false })
-    this.props.cancelSearch()
+    this.props.navigation.pop()
   }
 
   render() {
