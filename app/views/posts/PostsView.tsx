@@ -1,13 +1,13 @@
 import React from 'react'
 
-import { PostsProps, PostsState } from '../../../types/navigation';
-import redditAPI from '../../../api/reddit'
-import { Post } from '../../../types/primitives';
+import { PostsProps, PostsState } from '../../types/navigation';
+import redditAPI from '../../api/reddit'
+import { Post } from '../../types/primitives';
 import PostCell from './PostCell';
 import { View, ActivityIndicator, RefreshControl } from 'react-native';
-import { defaults } from '../../styles';
+import { defaults } from '../styles';
 import { FlatList } from 'react-native-gesture-handler';
-import { Separator } from '../../Separator';
+import { Separator } from '../Separator';
 
 export default class PostsView extends React.Component<PostsProps, PostsState> {
 

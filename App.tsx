@@ -2,8 +2,8 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
-import SubredditsView from './app/views/subreddits/views/SubredditView'
-import PostsView from './app/views/posts/views/PostsView'
+import SubredditsView from './app/views/subreddits/SubredditView'
+import PostsView from './app/views/posts/PostsView'
 import PostInfoView from './app/views/post_details/PostInfoView'
 
 const Stack = createStackNavigator();

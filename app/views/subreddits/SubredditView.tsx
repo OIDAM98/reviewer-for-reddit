@@ -1,14 +1,15 @@
-import { Subreddit } from '../../../types/primitives'
-import { SubredditsProps, SubredditsState } from '../../../types/navigation';
-import { sub_styles, defaults } from '../../../views/styles';
+import { Subreddit } from '../../types/primitives'
+import { SubredditsProps, SubredditsState } from '../../types/navigation';
+import { sub_styles, defaults } from '../styles';
 
 import React from 'react';
 import SearchForm from './SearchForm'
 import SubredditCell from './SubredditCell'
 
-import { View, FlatList } from 'react-native';
+import { View, FlatList, Alert } from 'react-native';
 
 import { FontAwesome } from '@expo/vector-icons';
+import reddit from '../../api/reddit';
 
 const DEFAUL_SUBS: Array<Subreddit> =
     ['frontpage', 'all', 'funny', 'cooking', 'aww', 'nextfuckinglevel', 'beamazed', 'programming']
@@ -45,7 +46,36 @@ export default class SubredditsView extends React.Component<SubredditsProps, Sub
     // Else, notify it couldn't be added
     handleSubreddit = (name: string | undefined) => {
         if (name) {
-            this.addSubreddit({ name })
+            reddit.searchSubreddit(name.toLowerCase())
+                .then(found => {
+                    if (found) {
+                        this.addSubreddit({ name })
+                    }
+                    else {
+                        Alert.alert(
+                            "Invalid subreddit",
+                            "No subreddit found, maybe check spelling?",
+                            [
+                                {
+                                    text: "OK",
+                                    onPress: () => console.log("Invalid Form")
+                                }
+                            ]
+                        )
+                    }
+                })
+                .catch(e => {
+                    Alert.alert(
+                        "Connection Error",
+                        "There was an error connecting to Reddit.",
+                        [
+                            {
+                                text: "OK",
+                                onPress: () => console.log("Invalid Form")
+                            }
+                        ]
+                    )
+                })
         }
     }
 
@@ -88,6 +118,7 @@ export default class SubredditsView extends React.Component<SubredditsProps, Sub
                         name="search-plus"
                         onPress={this.toggleSearch}
                         backgroundColor='royalblue'
+                        justifyContent='center'
                     >
                         ADD SUBREDDIT
                     </FontAwesome.Button>

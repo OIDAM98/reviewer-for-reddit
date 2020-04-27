@@ -21,14 +21,15 @@ export const defaults = StyleSheet.create({
     alignSelf: "center"
   },
   color: {
-    backgroundColor: '#EDFBF8'
+    backgroundColor: '#EDFBF8',
   }
 });
 
 export const sub_styles = StyleSheet.create({
   list: {
     flex: 1,
-    paddingTop: 25
+    paddingTop: 25,
+    paddingBottom: 25
   },
   cell: {
     flex: 1,
@@ -38,7 +39,8 @@ export const sub_styles = StyleSheet.create({
     justifyContent: 'center',
     paddingVertical: 15,
     marginVertical: 10,
-    marginHorizontal: 75
+    marginHorizontal: 75,
+    borderRadius: 7
   },
   text: {
     fontSize: 15,
@@ -60,7 +62,7 @@ export const sub_styles = StyleSheet.create({
     borderColor: 'royalblue'
   },
   search_container: {
-    flex: 1,
+    flex: .75,
     padding: 20,
     margin: 10,
     justifyContent: 'center',

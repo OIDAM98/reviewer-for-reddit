@@ -1,10 +1,10 @@
-import { posts } from '../../styles';
-import { Post } from '../../../types/primitives'
+import { posts } from '../styles';
+import { Post } from '../../types/primitives'
 
 import { Text, View, Image } from 'react-native';
 
 import React from 'react';
-import { PostsNavProps } from '../../../types/navigation';
+import { PostsNavProps } from '../../types/navigation';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 type Props = {

@@ -1,4 +1,5 @@
 import { Post, Thumbnail } from "../types/primitives";
+import { replaceHTML } from "./htmlDecoder";
 
 const baseUrl = 'https://www.reddit.com';
 const jsonPostfix = '.json';
@@ -23,9 +24,9 @@ function formatToPost(jsonPost: any): Post {
             img: undefined,
             thumbnail: undefined,
             name: name as string,
-            title: title as string,
+            title: replaceHTML(title as string),
             author: author as string,
-            selftext: selftext as string,
+            selftext: replaceHTML(selftext as string),
             submition: new Date((created_utc as number) * 1000),
             upvotes: score as number,
             comments: num_comments as number,
@@ -61,9 +62,9 @@ function formatToPost(jsonPost: any): Post {
             img: img,
             thumbnail: thumbnail_obj,
             name: name as string,
-            title: title as string,
+            title: replaceHTML(title as string),
             author: author as string,
-            selftext: selftext as string,
+            selftext: replaceHTML(selftext as string),
             submition: new Date((created_utc as number) * 1000),
             upvotes: score as number,
             comments: num_comments as number,
@@ -95,6 +96,16 @@ const fetchPosts = async (subreddit: string, after: string | undefined) => {
     return posts
 }
 
+const searchSubreddit = async (subreddit: string) => {
+    const url = `${baseUrl}/subreddits/search/${jsonPostfix}?q=${subreddit}`
+    const response = await fetch(url)
+    const json = await response.json()
+    const data = json.data.children
+    const subreddits: Array<string> = data.map((json: any) => json.data.display_name as string)
+    return subreddits.some(sub => sub.toLowerCase() == subreddit)
+}
+
 export default {
-    fetchPosts
+    fetchPosts,
+    searchSubreddit
 }

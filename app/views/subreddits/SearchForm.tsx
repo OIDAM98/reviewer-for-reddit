@@ -1,7 +1,6 @@
 import React from 'react';
 import { Text, View, Button, ActivityIndicator, TextInput, KeyboardAvoidingView, Alert } from 'react-native';
-import { sub_styles } from '../../styles';
-import { Separator } from '../../Separator';
+import { sub_styles } from '../styles';
 
 interface SearchState {
   toSearch: string,
