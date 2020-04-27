@@ -6,7 +6,8 @@ export type RootParams = {
     Subreddits: undefined,
     Posts: { currentSub: string, logged: boolean },
     PostInfo: { post: Post },
-    SearchForm: { searchSubreddit: Function }
+    SearchForm: { searchSubreddit: Function },
+    WebViewer: { url: string }
 }
 
 // Subreddits View Props and State
@@ -70,4 +71,18 @@ export type PostInfoProps = {
 
 export type PostInfoState = {
     post: Post
+}
+
+// Web Viewer Props and State
+
+export type WebNavProps = StackNavigationProp<RootParams, 'WebViewer'>
+type WebRouteProps = RouteProp<RootParams, 'WebViewer'>
+
+export type WebProps = {
+    route: WebRouteProps,
+    navigation: WebNavProps,
+}
+
+export type WebState = {
+    url: string
 }

@@ -3,7 +3,6 @@ import { SubredditsProps, SubredditsState } from '../../types/navigation';
 import { sub_styles, defaults } from '../styles';
 
 import React from 'react';
-import SearchForm from './SearchForm'
 import SubredditCell from './SubredditCell'
 
 import { View, FlatList, Alert } from 'react-native';

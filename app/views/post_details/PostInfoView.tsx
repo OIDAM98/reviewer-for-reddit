@@ -26,10 +26,12 @@ export default class PostInfoView extends React.Component<PostInfoProps, PostInf
                     <FontAwesome.Button
                         name="comments"
                         size={24}
-                        onPress={() => { }}
+                        onPress={() => this.props.navigation.navigate('WebViewer', {
+                            url: this.state.post.permalink
+                        })}
                         backgroundColor='royalblue'
                     >
-                        {'View Comments'+ (this.state.post.img ? ' and Multimedia' : '')}
+                        {'View Comments' + (this.state.post.img ? ' and Multimedia' : '')}
                     </FontAwesome.Button>
                 </View>
             </View>

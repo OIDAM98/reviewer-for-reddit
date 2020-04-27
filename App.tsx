@@ -6,6 +6,7 @@ import SubredditsView from './app/views/subreddits/SubredditView'
 import PostsView from './app/views/posts/PostsView'
 import PostInfoView from './app/views/post_details/PostInfoView'
 import SearchForm from './app/views/subreddits/SearchForm';
+import WebViewer from './app/views/web/WebViewer';
 
 const Stack = createStackNavigator();
 
@@ -33,7 +34,7 @@ export default class App extends React.Component {
             name="Subreddits"
             component={SubredditsView}
           />
-          <Stack.Screen 
+          <Stack.Screen
             name="SearchForm"
             component={SearchForm}
           />
@@ -44,6 +45,10 @@ export default class App extends React.Component {
           <Stack.Screen
             name="PostInfo"
             component={PostInfoView}
+          />
+          <Stack.Screen
+            name="WebViewer"
+            component={WebViewer}
           />
         </Stack.Navigator>
       </NavigationContainer>
