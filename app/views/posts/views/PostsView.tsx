@@ -76,11 +76,11 @@ export default class PostsView extends React.Component<PostsProps, PostsState> {
         if (this.state.beginning && this.state.loading) {
             return (
                 <View style={defaults.all}>
-                    <ActivityIndicator size="large" color="00ff00"/>
+                    <ActivityIndicator size="large" color="lightsteelblue" />
                 </View>)
         }
         return (
-            <View style={defaults.all}>
+            <View style={[defaults.all, { backgroundColor: '#EDFBF8' }]}>
                 <FlatList
                     key={'posts'}
                     renderItem={(obj) => this.renderPost(obj.item)}

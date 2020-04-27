@@ -6,7 +6,9 @@ import React from 'react';
 import SearchForm from './SearchForm'
 import SubredditCell from './SubredditCell'
 
-import { View, FlatList, Button } from 'react-native';
+import { View, FlatList } from 'react-native';
+
+import { FontAwesome } from '@expo/vector-icons';
 
 const DEFAUL_SUBS: Array<Subreddit> =
     ['frontpage', 'all', 'funny', 'cooking', 'aww', 'nextfuckinglevel', 'beamazed', 'programming']
@@ -74,7 +76,7 @@ export default class SubredditsView extends React.Component<SubredditsProps, Sub
             />
         // Show list of subreddits
         return (
-            <View style={defaults.all}>
+            <View style={[defaults.all, defaults.color]}>
                 <FlatList style={sub_styles.list}
                     key={'subs'}
                     renderItem={(obj) => this.renderSubreddit(obj.item)}
@@ -82,7 +84,13 @@ export default class SubredditsView extends React.Component<SubredditsProps, Sub
                     keyExtractor={(item: Subreddit) => item.name}
                 />
                 <View style={sub_styles.options_container}>
-                    <Button title='Add subreddit' onPress={this.toggleSearch} />
+                    <FontAwesome.Button
+                        name="search-plus"
+                        onPress={this.toggleSearch}
+                        backgroundColor='royalblue'
+                    >
+                        ADD SUBREDDIT
+                    </FontAwesome.Button>
                 </View>
             </View>
         )

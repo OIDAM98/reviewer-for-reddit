@@ -24,7 +24,7 @@ const PostInfo = ({ post, navigation }: Props) => {
     return (
         <TouchableOpacity onPress={showPostInfo}>
             <View style={posts.content}>
-                <Text style={[posts.title, { color: is_sticky ? 'steelblue' : 'black' }]}>{title}</Text>
+                <Text style={[posts.title, { color: is_sticky ? 'royalblue' : 'black' }]}>{title}</Text>
                 <View style={posts.info}>
                     <Text style={posts.info_text}>{'/u/' + author}</Text>
                 </View>
@@ -34,7 +34,7 @@ const PostInfo = ({ post, navigation }: Props) => {
                 </View>
                 <View style={posts.info}>
                     <Text style={posts.info_text}>{comments} comments</Text>
-                    <Text style={posts.info_text}>{upvotes} score</Text>
+                    <Text style={posts.info_text}>{upvotes} pts.</Text>
                 </View>
             </View>
 

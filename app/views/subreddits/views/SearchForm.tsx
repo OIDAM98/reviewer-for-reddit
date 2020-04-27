@@ -73,16 +73,17 @@ export default class SearchForm extends React.Component<SearchProps, SearchState
         <TextInput
           style={sub_styles.search_text}
           onChangeText={this.subredditChanged}
-          value={this.state.toSearch} />
+          value={this.state.toSearch}
+          autoCapitalize='none'
+        />
         <View style={[sub_styles.progress, sub_styles.progress, { opacity: this.state.showProgress ? 100 : 0 }]} >
           <Text>Searching...</Text>
           <ActivityIndicator color="#0000ff" />
         </View>
-        <Separator />
         <View style={sub_styles.options_container}>
-          <Button title="Search for subreddit" onPress={this.handleSubmit} />
+          <Button title="Search for subreddit" onPress={this.handleSubmit} color='royalblue' />
           <View style={{ margin: 10 }} />
-          <Button title="Cancel" onPress={this.handleCancel} />
+          <Button title="Cancel" onPress={this.handleCancel} color='royalblue' />
         </View>
       </KeyboardAvoidingView>
     )

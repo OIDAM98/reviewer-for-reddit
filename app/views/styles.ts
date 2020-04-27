@@ -10,28 +10,35 @@ export const defaults = StyleSheet.create({
   },
   separator: {
     marginVertical: 8,
-    borderBottomColor: '#737373',
+    // '#737373'
+    borderBottomColor: 'royalblue',
     borderBottomWidth: StyleSheet.hairlineWidth,
   },
   all: {
     flex: 1
+  },
+  center: {
+    alignSelf: "center"
+  },
+  color: {
+    backgroundColor: '#EDFBF8'
   }
 });
 
 export const sub_styles = StyleSheet.create({
   list: {
     flex: 1,
-    backgroundColor: 'lightsteelblue'
+    paddingTop: 25
   },
   cell: {
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'royalblue',
+    backgroundColor: 'cornflowerblue',
     justifyContent: 'center',
-    paddingVertical: 10,
+    paddingVertical: 15,
     marginVertical: 10,
-    marginHorizontal: 30
+    marginHorizontal: 75
   },
   text: {
     fontSize: 15,
@@ -48,24 +55,22 @@ export const sub_styles = StyleSheet.create({
     padding: 10
   },
   search_text: {
-    padding: 1,
-    borderWidth: 1,
-    borderColor: 'cyan'
+    padding: 2,
+    borderBottomWidth: 1.5,
+    borderColor: 'royalblue'
   },
   search_container: {
     flex: 1,
     padding: 20,
     margin: 10,
-    justifyContent: 'center'
+    justifyContent: 'center',
+    backgroundColor: '#EDFBF8'
   },
   options_container: {
-    flexDirection: 'column',
-    justifyContent: 'space-between',
     padding: 10,
-    margin: 10
+    margin: 30,
   },
   button_container: {
-    flexDirection: 'column',
     justifyContent: 'space-between',
   }
 });
@@ -103,5 +108,51 @@ export const posts = StyleSheet.create({
     height: '100%',
     justifyContent: "center",
     alignContent: "center"
+  }
+})
+
+export const post_detail = StyleSheet.create({
+  view: {
+    flex: 1,
+    justifyContent: "space-between",
+    alignItems: "flex-start",
+    paddingHorizontal: 10,
+    paddingVertical: 10,
+    backgroundColor: '#EDFBF8'
+  },
+  title: {
+    fontWeight: "bold",
+    fontSize: 22,
+    textAlign: "left",
+    marginBottom: 10,
+    marginHorizontal: 10
+  },
+  content: {
+    flex: 1,
+    justifyContent: "flex-start",
+    width: '100%',
+    alignItems: "stretch",
+  },
+  info: {
+    flex: 0.15,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "flex-start",
+    paddingVertical: 3,
+    paddingHorizontal: 10
+  },
+  info_text: {
+    fontSize: 16,
+    padding: 2,
+    textAlign: "left"
+  },
+  scroll: {
+    flex: 4
+  },
+  scroll_content: {
+    marginBottom: 20
+  },
+  button_container: {
+    marginTop: 20
   }
 })

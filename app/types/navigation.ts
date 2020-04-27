@@ -42,3 +42,16 @@ export type PostsState = {
     loggedIn: boolean,
     currentPosts: Array<Post>
 }
+
+// Post Info View Props and State
+export type PostInfoNavProps = StackNavigationProp<RootParams, 'PostInfo'>
+type PostInfoRouteProps = RouteProp<RootParams, 'PostInfo'>
+
+export type PostInfoProps = {
+    route: PostInfoRouteProps,
+    navigation: PostInfoNavProps,
+}
+
+export type PostInfoState = {
+    post: Post
+}
