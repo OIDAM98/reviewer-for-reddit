@@ -1,7 +1,7 @@
 import { Text, View, TouchableOpacity } from 'react-native';
-import { SubredditsNavProps } from '../../../types/navigation';
+import { SubredditsNavProps } from '../../types/navigation';
 import React from 'react';
-import { sub_styles } from '../../styles';
+import { sub_styles } from '../styles';
 
 type Props = {
     name: string,
