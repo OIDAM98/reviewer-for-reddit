@@ -79,7 +79,21 @@ export const sub_styles = StyleSheet.create({
 
 export const posts = StyleSheet.create({
   with_image: {
-    padding: 5
+    paddingBottom: 30
+  },
+  cell: {
+    marginHorizontal: 20,
+    marginVertical: 15,
+    backgroundColor: 'white',
+    borderWidth: 1,
+    borderRadius: 4,
+    borderColor: '#ddd',
+    borderBottomWidth: 0,
+    shadowColor: 'black',
+    shadowOffset: { width: 9, height: 6 },
+    shadowOpacity: 0.10,
+    shadowRadius: 11.0,
+    elevation: 1,
   },
   content: {
     justifyContent: "center",

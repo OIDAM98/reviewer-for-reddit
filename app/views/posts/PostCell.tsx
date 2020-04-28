@@ -49,7 +49,7 @@ const PostCell = ({ post, navigation }: Props) => {
         const width = post.thumbnail?.width * 1.2
         const height = post.thumbnail?.height * 1.2
         return (
-            <View style={posts.with_image}>
+            <View style={[posts.cell, posts.with_image]}>
 
                 <PostInfo post={post} navigation={navigation} />
                 <View style={{ alignSelf: "center", paddingTop: 15 }}>
@@ -62,7 +62,11 @@ const PostCell = ({ post, navigation }: Props) => {
             </View>
         )
     }
-    return (<PostInfo post={post} navigation={navigation} />)
+    return (
+        <View style={posts.cell}>
+            <PostInfo post={post} navigation={navigation} />
+        </View>
+    )
 }
 
 export default PostCell;

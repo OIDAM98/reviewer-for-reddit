@@ -80,7 +80,7 @@ export default class PostsView extends React.Component<PostsProps, PostsState> {
                 </View>)
         }
         return (
-            <View style={[defaults.all, { backgroundColor: '#EDFBF8' }]}>
+            <View style={[defaults.all, defaults.color]}>
                 <FlatList
                     key={'posts'}
                     renderItem={(obj) => this.renderPost(obj.item)}
