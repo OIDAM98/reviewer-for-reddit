@@ -3,7 +3,9 @@ import { User, Subreddit, Success, PostResponse } from "../types/database/respon
 import { Post } from '../types/primitives'
 
 const baseURL = 'https://reviewer-database.herokuapp.com'
+
 type ValidPost = 'newUser' | 'login' | 'subreddits' | 'subreddits/add' | 'posts' | 'posts/add' | 'posts/add/image'
+
 const createPOST = (data: Object): RequestInit => {
     return ({
         method: 'POST',
