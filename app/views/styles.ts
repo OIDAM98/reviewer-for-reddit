@@ -124,6 +124,11 @@ export const posts = StyleSheet.create({
     height: '100%',
     justifyContent: "center",
     alignContent: "center"
+  },
+  save_button: {
+    marginVertical: 5,
+    alignContent: "center",
+    justifyContent: "center"
   }
 })
 

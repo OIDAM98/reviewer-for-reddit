@@ -1,6 +1,6 @@
-import { UserPost, UserIdGet, SubredditGet, SubredditPost, PostsGet, PostPut, PostImagePut } from "../types/database/requests"
-import { User, Subreddit, Success, PostResponse } from "../types/database/responses"
-import { Post } from '../types/primitives'
+import { UserPost, UserIdGet, SubredditGet, PostsGet, PostPut } from "../types/database/requests"
+import { UserResponse, SubredditResponse, Success, PostResponse } from "../types/database/responses"
+import { Post, Subreddit } from '../types/primitives'
 
 const baseURL = 'https://reviewer-database.herokuapp.com'
 
@@ -24,68 +24,39 @@ async function post<T>(route: ValidPost, data: Object): Promise<T> {
 
 const addUser = async (username: string, password: string) => {
     const user: UserPost = { username, password }
-    return post<User[]>('newUser', user)
+    return post<UserResponse>('newUser', user)
 }
 
 const login = async (username: string, password: string) => {
     const user: UserIdGet = { username, password }
-    return post<User[]>('login', user)
+    return post<UserResponse>('login', user)
 }
 
 const getSubreddits = async (user_id: number) => {
     const user: SubredditGet = { id: user_id }
-    return post<Subreddit[]>('subreddits', user)
+    const subs = await post<SubredditResponse[]>('subreddits', user)
+    const subreddits: Subreddit[] = subs.map(sub => ({ name: sub.subreddit }))
+    return subreddits
 }
 
-const addSubreddit = async (user_id: number, subname: string) => {
-    const subreddit: SubredditPost = { id: user_id, subreddit: subname }
-    return post<Success>('subreddits/add', subreddit)
+const getPosts = async (user_id: number, subreddit: string) => {
+    const subrequest: PostsGet = { user_id, subreddit }
+    const postsresp = await post<PostResponse[]>('posts', subrequest)
+    const posts: Post[] = postsresp.map(p => transformToResponse(p))
+    return posts
 }
 
-const getPosts = async (sub_id: number) => {
-    const subreddit: PostsGet = { subreddit_id: sub_id }
-    return post<PostResponse[]>('posts', subreddit)
-}
-
-const addPost = async (toadd: Post, sub_id: number) => {
+const addPost = async (toadd: Post, user_id: number) => {
+    const postreq: PostPut = transformToRequest(toadd, user_id)
     if (toadd.img && toadd.thumbnail) {
-        const postreq: PostImagePut = transformToImageRequest(toadd, sub_id)
         return post<Success>('posts/add/image', postreq)
     }
     else {
-        const postreq: PostPut = transformToRequest(toadd, sub_id)
         return post<Success>('posts/add', postreq)
     }
 }
 
-function transformToRequest(post: Post, subreddit_id: number) {
-    const {
-        name,
-        title,
-        author,
-        selftext,
-        submition,
-        upvotes,
-        comments,
-        is_sticky,
-        subreddit,
-        permalink
-    } = post
-    return ({
-        subreddit_id,
-        name,
-        title,
-        author,
-        selftext,
-        submition: submition.getTime(),
-        upvotes,
-        comments,
-        is_sticky,
-        subreddit,
-        permalink
-    })
-}
-function transformToImageRequest(post: Post, subreddit_id: number) {
+function transformToRequest(post: Post, user_id: number) {
     const {
         name,
         title,
@@ -100,8 +71,11 @@ function transformToImageRequest(post: Post, subreddit_id: number) {
         img,
         thumbnail
     } = post
+    const final_img = img ? img : null
+    const thumbnail_img = thumbnail?.img ? thumbnail.img : null;
+    const thumbnail_width = thumbnail?.width ? thumbnail.width : null;
+    const thumbnail_height = thumbnail?.height ? thumbnail.height : null;
     return ({
-        subreddit_id,
         name,
         title,
         author,
@@ -112,18 +86,63 @@ function transformToImageRequest(post: Post, subreddit_id: number) {
         is_sticky,
         subreddit,
         permalink,
-        img,
-        thumbnail_img: thumbnail.img,
-        thumbnail_width: thumbnail.width,
-        thumbnail_height: thumbnail.height
+        img: final_img,
+        thumbnail_img,
+        thumbnail_width,
+        thumbnail_height,
+        user_id
     })
+}
+
+function transformToResponse(post: PostResponse) {
+    const {
+        img,
+        thumbnail_img,
+        thumbnail_width,
+        thumbnail_height,
+        name,
+        title,
+        author,
+        selftext,
+        submition,
+        upvotes,
+        comments,
+        is_sticky,
+        subreddit,
+        permalink
+    } = post
+    const final_img = img ? img : undefined
+    let thumbnail = undefined
+    if (thumbnail_img && thumbnail_width && thumbnail_height) {
+        thumbnail = {
+            img: thumbnail_img,
+            width: thumbnail_width,
+            height: thumbnail_height
+        }
+    }
+
+    return ({
+        img: final_img,
+        thumbnail,
+        name,
+        title,
+        author,
+        selftext,
+        submition: new Date(submition),
+        upvotes,
+        comments,
+        is_sticky,
+        subreddit,
+        permalink,
+        saved: true
+    })
+
 }
 
 export default {
     addUser,
     login,
     getSubreddits,
-    addSubreddit,
     getPosts,
     addPost
 }

@@ -11,7 +11,7 @@ export default class SearchForm extends React.Component<SearchProps, SearchState
   }
 
   componentDidMount() {
-    this.props.navigation.setOptions({ title: 'Add Subreddit'})
+    this.props.navigation.setOptions({ title: 'Add Subreddit' })
   }
 
   subredditChanged = (toSearch: string) => {

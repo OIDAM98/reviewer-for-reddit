@@ -1,4 +1,4 @@
-export interface Subreddit {
+export interface SubredditResponse {
     subreddit: string
 }
 
@@ -19,7 +19,7 @@ export interface PostResponse {
     permalink: string
 }
 
-export interface User {
+export interface UserResponse {
     id: number
 }
 
@@ -29,5 +29,5 @@ export type Success = {
 
 export type Failure = {
     status: string,
-    message: JSON
+    message: string
 }

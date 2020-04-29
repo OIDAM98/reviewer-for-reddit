@@ -4,7 +4,7 @@ import { Post, Subreddit } from './primitives'
 
 export type RootParams = {
     Subreddits: undefined,
-    Posts: { currentSub: string, logged: boolean },
+    Posts: { currentSub: string, userID: number },
     PostInfo: { post: Post },
     SearchForm: { searchSubreddit: Function },
     WebViewer: { url: string }
@@ -21,7 +21,7 @@ export type SubredditsProps = {
 }
 
 export type SubredditsState = {
-    logged: boolean,
+    userID: number,
     subreddits: Array<Subreddit>,
 }
 
@@ -56,8 +56,9 @@ export type PostsState = {
     beginning: boolean,
     refreshing: boolean,
     currentSub: string,
-    loggedIn: boolean,
-    currentPosts: Array<Post>
+    userID: number,
+    currentPosts: Array<Post>,
+    offline: boolean
 }
 
 // Post Info View Props and State

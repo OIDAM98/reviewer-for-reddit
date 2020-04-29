@@ -6,14 +6,14 @@ import { sub_styles } from '../styles';
 type Props = {
     name: string,
     navigation: SubredditsNavProps,
-    logged: boolean
+    userId: number
 }
 
-const SubredditCell = ({ name, navigation, logged }: Props) => {
+const SubredditCell = ({ name, navigation, userId }: Props) => {
     const showList = () => {
         navigation.navigate('Posts', {
-            currentSub: name,
-            logged: logged
+            currentSub: name.toLowerCase(),
+            userID: userId
         })
     }
     return (

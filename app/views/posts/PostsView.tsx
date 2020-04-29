@@ -4,10 +4,11 @@ import { PostsProps, PostsState } from '../../types/navigation';
 import redditAPI from '../../api/reddit'
 import { Post } from '../../types/primitives';
 import PostCell from './PostCell';
-import { View, ActivityIndicator, RefreshControl } from 'react-native';
+import { View, ActivityIndicator, RefreshControl, Alert } from 'react-native';
 import { defaults } from '../styles';
 import { FlatList } from 'react-native-gesture-handler';
 import { Separator } from '../Separator';
+import database from '../../api/database';
 
 export default class PostsView extends React.Component<PostsProps, PostsState> {
 
@@ -16,25 +17,60 @@ export default class PostsView extends React.Component<PostsProps, PostsState> {
         beginning: true,
         refreshing: false,
         currentSub: this.props.route.params.currentSub || '',
-        loggedIn: this.props.route.params.logged || false,
-        currentPosts: []
+        userID: this.props.route.params.userID || -1,
+        currentPosts: [],
+        offline: false
     }
 
     componentDidMount() {
         this.setState({ loading: true })
         this.props.navigation.setOptions({ title: this.state.currentSub })
-        if (this.state.loggedIn) {
-            // Fetch saved posts from database
 
+        // Fetch list of posts from Reddit
+        redditAPI.fetchPosts(this.state.currentSub, undefined)
+            .then(posts => this.setState({
+                beginning: false,
+                loading: false,
+                currentPosts: posts
+            }))
+
+    }
+
+    savePost = (post: Post) => {
+        if (post.saved) {
+            Alert.alert(
+                "Post saved",
+                "Post is already saved to view offline",
+                [
+                    {
+                        text: "OK",
+                        onPress: () => console.log("Try to unsave post")
+                    }
+                ]
+            )
         }
         else {
-            // Fetch list of posts from Reddit
-            redditAPI.fetchPosts(this.state.currentSub, undefined)
-                .then(posts => this.setState({
-                    beginning: false,
-                    loading: false,
-                    currentPosts: posts
-                }))
+            database.addPost(post, this.state.userID)
+                .then(res => {
+                    const saved = { ...post, saved: true }
+                    const newState = this.state.currentPosts.map(post => {
+                        if (post.name !== saved.name) return post
+                        return saved
+                    })
+                    this.setState({ currentPosts: [...newState] })
+                })
+                .catch(err => {
+                    Alert.alert(
+                        "Error saving post",
+                        err.message,
+                        [
+                            {
+                                text: "OK",
+                                onPress: () => console.log("Error saving post")
+                            }
+                        ]
+                    )
+                })
         }
     }
 
@@ -70,6 +106,7 @@ export default class PostsView extends React.Component<PostsProps, PostsState> {
     renderPost = (item: Post) => <PostCell
         post={item}
         navigation={this.props.navigation}
+        save={this.savePost}
     />
 
     render() {

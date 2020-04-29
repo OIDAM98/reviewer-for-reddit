@@ -9,6 +9,7 @@ import { View, FlatList, Alert } from 'react-native';
 
 import { FontAwesome } from '@expo/vector-icons';
 import reddit from '../../api/reddit';
+import database from '../../api/database'
 
 const DEFAUL_SUBS: Array<Subreddit> =
     ['frontpage', 'all', 'funny', 'cooking', 'aww', 'nextfuckinglevel', 'beamazed', 'programming']
@@ -16,15 +17,45 @@ const DEFAUL_SUBS: Array<Subreddit> =
 
 export default class SubredditsView extends React.Component<SubredditsProps, SubredditsState> {
     state: Readonly<SubredditsState> = {
-        logged: false,
         subreddits: [],
+        userID: 1
     }
 
     // Load user's subreddits or load defaults
     componentDidMount() {
-        if (this.state.logged) {
+        if (this.state.userID > 0) {
             // Fetch subreddits from the DB
-
+            database.getSubreddits(this.state.userID)
+                .then(subs => {
+                    if (subs.length > 0) {
+                        this.setState({ subreddits: subs })
+                    }
+                    else {
+                        Alert.alert(
+                            "Empty Subreddits",
+                            "No subreddits found for user. Maybe you haven't saved any?",
+                            [
+                                {
+                                    text: "OK",
+                                    onPress: () => console.log("Empty subs")
+                                }
+                            ]
+                        )
+                        this.setState({ subreddits: DEFAUL_SUBS })
+                    }
+                })
+                .catch(e => {
+                    Alert.alert(
+                        "Network Error",
+                        "Subreddits for user could not be loaded, try again later",
+                        [
+                            {
+                                text: "OK",
+                                onPress: () => console.log("Network error")
+                            }
+                        ]
+                    )
+                })
         }
         else {
             //const subreddits 
@@ -36,7 +67,7 @@ export default class SubredditsView extends React.Component<SubredditsProps, Sub
     renderSubreddit = (item: Subreddit) => <SubredditCell
         name={item.name}
         navigation={this.props.navigation}
-        logged={this.state.logged}
+        userId={this.state.userID}
     />
 
     // Search subreddit in Reddit
@@ -47,7 +78,7 @@ export default class SubredditsView extends React.Component<SubredditsProps, Sub
             reddit.searchSubreddit(name.toLowerCase())
                 .then(found => {
                     if (found) {
-                        this.addSubreddit({ name })
+                        this.addSubreddit({ name: name.toLowerCase() })
                         this.props.navigation.pop()
                     }
                     else {
