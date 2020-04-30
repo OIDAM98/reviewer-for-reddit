@@ -7,13 +7,15 @@ import PostsView from './app/views/posts/PostsView'
 import PostInfoView from './app/views/post_details/PostInfoView'
 import SearchForm from './app/views/subreddits/SearchForm';
 import WebViewer from './app/views/web/WebViewer';
+import LoginView from './app/views/login/LoginView';
+import RegisterView from './app/views/login/RegisterView';
 
 const Stack = createStackNavigator();
 
 export default class App extends React.Component {
 
   state = {
-    currentView: 'subreddits',
+    currentView: 'Login',
   }
 
   render() {
@@ -30,6 +32,14 @@ export default class App extends React.Component {
             }
           }}
         >
+          <Stack.Screen
+            name="Login"
+            component={LoginView}
+          />
+          <Stack.Screen
+            name="Register"
+            component={RegisterView}
+          />
           <Stack.Screen
             name="Subreddits"
             component={SubredditsView}

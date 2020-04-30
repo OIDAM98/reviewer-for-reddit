@@ -3,11 +3,47 @@ import { RouteProp } from '@react-navigation/native';
 import { Post, Subreddit } from './primitives'
 
 export type RootParams = {
-    Subreddits: undefined,
+    Login: undefined,
+    Register: undefined,
+    Subreddits: { userid: number },
     Posts: { currentSub: string, userID: number },
     PostInfo: { post: Post },
     SearchForm: { searchSubreddit: Function },
     WebViewer: { url: string }
+}
+
+// Login View Props and State
+
+export type LoginNavProps = StackNavigationProp<RootParams, 'Login'>
+type LoginRouteProps = RouteProp<RootParams, 'Login'>
+
+export type LoginProps = {
+    route: LoginRouteProps,
+    navigation: LoginNavProps,
+}
+
+export type LoginState = {
+    username: string,
+    password: string,
+    validState: boolean,
+    showProgress: boolean
+}
+
+// Register View Props and State
+
+export type RegisterNavProps = StackNavigationProp<RootParams, 'Register'>
+type RegisterRouteProps = RouteProp<RootParams, 'Register'>
+
+export type RegisterProps = {
+    route: RegisterRouteProps,
+    navigation: RegisterNavProps,
+}
+
+export type RegisterState = {
+    username: string,
+    password: string,
+    validState: boolean,
+    showProgress: boolean
 }
 
 // Subreddits View Props and State

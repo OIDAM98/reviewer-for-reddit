@@ -62,9 +62,8 @@ export const sub_styles = StyleSheet.create({
     borderColor: 'royalblue'
   },
   search_container: {
-    flex: .75,
-    padding: 20,
-    margin: 10,
+    flex: 1,
+    padding: 35,
     justifyContent: 'center',
     backgroundColor: '#EDFBF8'
   },

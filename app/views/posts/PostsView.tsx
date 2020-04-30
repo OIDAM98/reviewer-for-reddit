@@ -17,7 +17,7 @@ export default class PostsView extends React.Component<PostsProps, PostsState> {
         beginning: true,
         refreshing: false,
         currentSub: this.props.route.params.currentSub || '',
-        userID: this.props.route.params.userID || -1,
+        userID: this.props.route.params.userID || 0,
         currentPosts: [],
         offline: false
     }
@@ -37,40 +37,55 @@ export default class PostsView extends React.Component<PostsProps, PostsState> {
     }
 
     savePost = (post: Post) => {
-        if (post.saved) {
+        if (this.state.userID > 0) {
+            if (post.saved) {
+                Alert.alert(
+                    "Post saved",
+                    "Post is already saved to view offline",
+                    [
+                        {
+                            text: "OK",
+                            onPress: () => console.log("Try to unsave post")
+                        }
+                    ]
+                )
+            }
+            else {
+                database.addPost(post, this.state.userID)
+                    .then(res => {
+                        const saved = { ...post, saved: true }
+                        const newState = this.state.currentPosts.map(post => {
+                            if (post.name !== saved.name) return post
+                            return saved
+                        })
+                        this.setState({ currentPosts: [...newState] })
+                    })
+                    .catch(err => {
+                        console.log(err)
+                        Alert.alert(
+                            "Error saving post",
+                            err.message,
+                            [
+                                {
+                                    text: "OK",
+                                    onPress: () => console.log("Error saving post", err)
+                                }
+                            ]
+                        )
+                    })
+            }
+        }
+        else {
             Alert.alert(
-                "Post saved",
-                "Post is already saved to view offline",
+                "Unvailable functionality",
+                "Guest users cannot save posts. Try logging in or registering.",
                 [
                     {
                         text: "OK",
-                        onPress: () => console.log("Try to unsave post")
+                        onPress: () => console.log("Guest trying to save post")
                     }
                 ]
             )
-        }
-        else {
-            database.addPost(post, this.state.userID)
-                .then(res => {
-                    const saved = { ...post, saved: true }
-                    const newState = this.state.currentPosts.map(post => {
-                        if (post.name !== saved.name) return post
-                        return saved
-                    })
-                    this.setState({ currentPosts: [...newState] })
-                })
-                .catch(err => {
-                    Alert.alert(
-                        "Error saving post",
-                        err.message,
-                        [
-                            {
-                                text: "OK",
-                                onPress: () => console.log("Error saving post")
-                            }
-                        ]
-                    )
-                })
         }
     }
 

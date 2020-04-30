@@ -1,5 +1,5 @@
 import { UserPost, UserIdGet, SubredditGet, PostsGet, PostPut } from "../types/database/requests"
-import { UserResponse, SubredditResponse, Success, PostResponse } from "../types/database/responses"
+import { UserResponse, SubredditResponse, Success, PostResponse, Failure } from "../types/database/responses"
 import { Post, Subreddit } from '../types/primitives'
 
 const baseURL = 'https://reviewer-database.herokuapp.com'
@@ -16,10 +16,19 @@ const createPOST = (data: Object): RequestInit => {
     })
 }
 
-async function post<T>(route: ValidPost, data: Object): Promise<T> {
+async function post<T>(route: ValidPost, data: Object): Promise<T | Failure> {
+    console.log(createPOST(data))
     const response = await fetch(`${baseURL}/${route}`, createPOST(data))
-    const body = await response.json()
-    return body
+    console.log(response.status)
+    console.log(response.body)
+    if (response.ok) {
+        const body = await response.json()
+        return body
+    }
+    else {
+        const err: Failure = await response.json()
+        return err
+    }
 }
 
 const addUser = async (username: string, password: string) => {
@@ -35,15 +44,33 @@ const login = async (username: string, password: string) => {
 const getSubreddits = async (user_id: number) => {
     const user: SubredditGet = { id: user_id }
     const subs = await post<SubredditResponse[]>('subreddits', user)
-    const subreddits: Subreddit[] = subs.map(sub => ({ name: sub.subreddit }))
-    return subreddits
+    console.log(subs, typeof subs)
+    if (!("status" in subs)) {
+        const typed = (subs as Array<SubredditResponse>)
+        if (typed.length > 0) {
+            const subreddits: Subreddit[] = typed.map(sub => ({ name: sub.subreddit }))
+            return subreddits
+        }
+        else return []
+    } else {
+        return subs as Failure
+    }
 }
 
 const getPosts = async (user_id: number, subreddit: string) => {
     const subrequest: PostsGet = { user_id, subreddit }
     const postsresp = await post<PostResponse[]>('posts', subrequest)
-    const posts: Post[] = postsresp.map(p => transformToResponse(p))
-    return posts
+    if (!("status" in postsresp)) {
+        const typed = (postsresp as Array<PostResponse>)
+        if (typed.length > 0) {
+            const posts: Post[] = typed.map(p => transformToResponse(p))
+            return posts
+        }
+        else return []
+    }
+    else {
+        return postsresp as Failure
+    }
 }
 
 const addPost = async (toadd: Post, user_id: number) => {
@@ -90,7 +117,7 @@ function transformToRequest(post: Post, user_id: number) {
         thumbnail_img,
         thumbnail_width,
         thumbnail_height,
-        user_id
+        user_id: user_id
     })
 }
 
