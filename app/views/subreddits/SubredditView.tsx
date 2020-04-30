@@ -92,6 +92,7 @@ export default class SubredditsView extends React.Component<SubredditsProps, Sub
                             }
                         ]
                     )
+                    this.setState({ subreddits: DEFAUL_SUBS })
                 }
             })
             //There was an error making the petition
