@@ -3,6 +3,7 @@ import { Text, View, Button, ActivityIndicator, TextInput, KeyboardAvoidingView,
 import { sub_styles } from '../styles';
 import { SearchProps, SearchState } from '../../types/navigation';
 
+// Screen that allows user to add a subreddit to its list
 export default class SearchForm extends React.Component<SearchProps, SearchState> {
   state: Readonly<SearchState> = {
     toSearch: '',
@@ -11,6 +12,7 @@ export default class SearchForm extends React.Component<SearchProps, SearchState
   }
 
   componentDidMount() {
+    // Sets the title of the screen
     this.props.navigation.setOptions({ title: 'Add Subreddit' })
   }
 
@@ -18,18 +20,25 @@ export default class SearchForm extends React.Component<SearchProps, SearchState
     this.setState({ toSearch })
   }
 
+  // This function is called when the state of the component is changed and will reload
   componentDidUpdate(prevProps: SearchProps, prevState: SearchState) {
+    // Ensuring that the state is not the same as the previous one
+    // This happens if the screen is idle, so performing this every tick will slow down the app
     if (prevState.toSearch !== this.state.toSearch) {
       this.validateForm()
     }
   }
 
+  // Assures that entered subreddit doesnt have whitespaces as Reddit doesnt allow them
   validateForm = () => {
+    // If entered subreddit has whitespaces
     if (/\s/.test(this.state.toSearch.trim())) this.setState({ validSub: false })
     else this.setState({ validSub: true })
   }
 
+  // Prompts the searching of the specified subreddit
   handleSubmit = () => {
+    // If the user has entered a valid subreddit
     if (this.state.validSub) {
       this.setState({ showProgress: true })
       this.searchSubreddit()
@@ -48,11 +57,12 @@ export default class SearchForm extends React.Component<SearchProps, SearchState
     }
   }
 
+  // Searches for the entered subreddit
   searchSubreddit = () => {
     this.props.route.params.searchSubreddit(this.state.toSearch.trim())
   }
 
-
+  // If the user clicks cancel then it returns to the Screen with List of Subreddits
   handleCancel = () => {
     this.setState({ showProgress: false })
     this.props.navigation.pop()
@@ -74,7 +84,7 @@ export default class SearchForm extends React.Component<SearchProps, SearchState
           <ActivityIndicator color="#0000ff" />
         </View>
         <View style={sub_styles.options_container}>
-          <Button title="Search for subreddit" onPress={this.handleSubmit} color='royalblue' />
+          <Button title="Add subreddit" onPress={this.handleSubmit} color='royalblue' />
           <View style={{ margin: 10 }} />
           <Button title="Cancel" onPress={this.handleCancel} color='royalblue' />
         </View>

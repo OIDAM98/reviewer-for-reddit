@@ -1,3 +1,5 @@
+// Types to comply database requests
+
 // USERS
 
 export type UserPost = {

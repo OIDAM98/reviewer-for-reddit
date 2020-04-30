@@ -13,10 +13,12 @@ import database from '../../api/database'
 import { Failure } from '../../types/database/responses';
 import { StackActions } from '@react-navigation/native';
 
+// Array of default subreddits to load if none are available to user
 const DEFAUL_SUBS: Array<Subreddit> =
     ['frontpage', 'all', 'funny', 'cooking', 'aww', 'nextfuckinglevel', 'beamazed', 'programming']
         .map(name => ({ name }))
 
+// Screen to show all Subreddits of user
 export default class SubredditsView extends React.Component<SubredditsProps, SubredditsState> {
     state: Readonly<SubredditsState> = {
         subreddits: [],
@@ -26,11 +28,13 @@ export default class SubredditsView extends React.Component<SubredditsProps, Sub
     // Load user's subreddits or load defaults
     componentDidMount() {
         this.props.navigation.setOptions({
+            // Adds button for the user to Log Out or Register (if guest) at top right of screen
             headerRight: () => (
                 <Button
                     title={this.state.userID > 0 ? 'Log Out' : 'Register'}
                     color='royalblue'
                     onPress={() => {
+                        // Returns to Login Screen
                         this.props.navigation.dispatch(
                             StackActions.replace('Login')
                         )
@@ -38,11 +42,12 @@ export default class SubredditsView extends React.Component<SubredditsProps, Sub
                 />
             )
         })
+        // If user is not a guest
         if (this.state.userID > 0) {
             this.loadSubreddits()
         }
+        // Loads defaults
         else {
-            //const subreddits 
             this.setState({ subreddits: DEFAUL_SUBS })
         }
     }
@@ -51,12 +56,15 @@ export default class SubredditsView extends React.Component<SubredditsProps, Sub
         // Fetch subreddits from the DB
         database.getSubreddits(this.state.userID)
             .then(res => {
+                // If the results are an array of subreddits
                 if (!("status" in res)) {
                     const subs = res as Array<Subreddit>
+                    // If user contains subreddits in the database
                     if (subs.length > 0) {
                         this.setState({ subreddits: subs })
                     }
                     else {
+                        // Alerts user that it has no subreddits
                         Alert.alert(
                             "Empty Subreddits",
                             "No subreddits found for user. Maybe you haven't saved any?",
@@ -67,9 +75,11 @@ export default class SubredditsView extends React.Component<SubredditsProps, Sub
                                 }
                             ]
                         )
+                        // And loads the defaults
                         this.setState({ subreddits: DEFAUL_SUBS })
                     }
                 }
+                // There was an error fetchin the user's subreddits
                 else {
                     const err = res as Failure
                     Alert.alert(
@@ -84,6 +94,7 @@ export default class SubredditsView extends React.Component<SubredditsProps, Sub
                     )
                 }
             })
+            //There was an error making the petition
             .catch(e => {
                 console.log(e)
                 Alert.alert(
@@ -114,9 +125,10 @@ export default class SubredditsView extends React.Component<SubredditsProps, Sub
         if (name) {
             reddit.searchSubreddit(name.toLowerCase())
                 .then(found => {
+                    // If subreddit is found
                     if (found) {
                         this.addSubreddit({ name: name.toLowerCase() })
-                        this.props.navigation.pop()
+                        this.props.navigation.pop() // Return to the Subreddits View
                     }
                     else {
                         Alert.alert(

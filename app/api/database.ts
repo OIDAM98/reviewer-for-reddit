@@ -2,10 +2,14 @@ import { UserPost, UserIdGet, SubredditGet, PostsGet, PostPut } from "../types/d
 import { UserResponse, SubredditResponse, Success, PostResponse, Failure } from "../types/database/responses"
 import { Post, Subreddit } from '../types/primitives'
 
+// URL of database
+// Database is hosted in HEROKU
 const baseURL = 'https://reviewer-database.herokuapp.com'
 
+// Routes that are valid in the database
 type ValidPost = 'newUser' | 'login' | 'subreddits' | 'subreddits/add' | 'posts' | 'posts/add' | 'posts/add/image'
 
+// Creates the metadata for a POST request
 const createPOST = (data: Object): RequestInit => {
     return ({
         method: 'POST',
@@ -16,11 +20,13 @@ const createPOST = (data: Object): RequestInit => {
     })
 }
 
+// Makes a post petition to an specified route of the database
 async function post<T>(route: ValidPost, data: Object): Promise<T | Failure> {
     console.log(createPOST(data))
+    // Make request
     const response = await fetch(`${baseURL}/${route}`, createPOST(data))
     console.log(response.status)
-    console.log(response.body)
+    // If response has status between 200 an 299
     if (response.ok) {
         const body = await response.json()
         return body
@@ -31,22 +37,27 @@ async function post<T>(route: ValidPost, data: Object): Promise<T | Failure> {
     }
 }
 
+// Add a user to the database
 const addUser = async (username: string, password: string) => {
     const user: UserPost = { username, password }
     return post<UserResponse>('newUser', user)
 }
 
+// Logs user to the database
 const login = async (username: string, password: string) => {
     const user: UserIdGet = { username, password }
     return post<UserResponse>('login', user)
 }
 
+// Gets the subreddits of a user
 const getSubreddits = async (user_id: number) => {
     const user: SubredditGet = { id: user_id }
     const subs = await post<SubredditResponse[]>('subreddits', user)
     console.log(subs, typeof subs)
+    // If response is an Array of SubredditResponse
     if (!("status" in subs)) {
         const typed = (subs as Array<SubredditResponse>)
+        // If response is not empty
         if (typed.length > 0) {
             const subreddits: Subreddit[] = typed.map(sub => ({ name: sub.subreddit }))
             return subreddits
@@ -57,11 +68,14 @@ const getSubreddits = async (user_id: number) => {
     }
 }
 
+// Get posts of a user in an specified subreddit
 const getPosts = async (user_id: number, subreddit: string) => {
     const subrequest: PostsGet = { user_id, subreddit }
     const postsresp = await post<PostResponse[]>('posts', subrequest)
+    // If response is an Array of PostResponse
     if (!("status" in postsresp)) {
         const typed = (postsresp as Array<PostResponse>)
+        // If response is not empty
         if (typed.length > 0) {
             const posts: Post[] = typed.map(p => transformToResponse(p))
             return posts
@@ -73,6 +87,7 @@ const getPosts = async (user_id: number, subreddit: string) => {
     }
 }
 
+// Add a post to a user in the database
 const addPost = async (toadd: Post, user_id: number) => {
     const postreq: PostPut = transformToRequest(toadd, user_id)
     if (toadd.img && toadd.thumbnail) {
@@ -83,6 +98,7 @@ const addPost = async (toadd: Post, user_id: number) => {
     }
 }
 
+// Transform a Post to a PostRequest to comply schema
 function transformToRequest(post: Post, user_id: number) {
     const {
         name,
@@ -121,6 +137,7 @@ function transformToRequest(post: Post, user_id: number) {
     })
 }
 
+// Transforms PostRequest to a Post to use in the app
 function transformToResponse(post: PostResponse) {
     const {
         img,
@@ -155,13 +172,13 @@ function transformToResponse(post: PostResponse) {
         title,
         author,
         selftext,
-        submition: new Date(submition),
+        submition: new Date(submition), // Submition is a long of UTC Epochs
         upvotes,
         comments,
         is_sticky,
         subreddit,
         permalink,
-        saved: true
+        saved: true // Post comes from database, so its saved
     })
 
 }

@@ -1,6 +1,8 @@
 import { StyleSheet } from 'react-native'
 import Constants from 'expo-constants';
 
+// Styling for each component in the application
+
 export const defaults = StyleSheet.create({
   container: {
     flex: 1,
@@ -10,7 +12,6 @@ export const defaults = StyleSheet.create({
   },
   separator: {
     marginVertical: 8,
-    // '#737373'
     borderBottomColor: 'royalblue',
     borderBottomWidth: StyleSheet.hairlineWidth,
   },

@@ -23,21 +23,26 @@ export default class PostsView extends React.Component<PostsProps, PostsState> {
     }
 
     componentDidMount() {
+        // Shows the loading screen
         this.setState({ loading: true })
         this.props.navigation.setOptions({ title: this.state.currentSub })
 
         // Fetch list of posts from Reddit
         redditAPI.fetchPosts(this.state.currentSub, undefined)
+            // Load posts when they are fetched
             .then(posts => this.setState({
                 beginning: false,
-                loading: false,
+                loading: false, // Stop showing loading screen
                 currentPosts: posts
             }))
 
     }
 
+    // Saves the selected post to the database
     savePost = (post: Post) => {
+        // If user is not a guest
         if (this.state.userID > 0) {
+            // If post has been saved
             if (post.saved) {
                 Alert.alert(
                     "Post saved",
@@ -51,6 +56,7 @@ export default class PostsView extends React.Component<PostsProps, PostsState> {
                 )
             }
             else {
+                // Saves post to database
                 database.addPost(post, this.state.userID)
                     .then(res => {
                         const saved = { ...post, saved: true }
@@ -89,10 +95,12 @@ export default class PostsView extends React.Component<PostsProps, PostsState> {
         }
     }
 
+    // Get the last post in the list
     getLastPost(): Post {
         return this.state.currentPosts[this.state.currentPosts.length - 1]
     }
 
+    // Loads more posts to this screen when arriving at the end of the current list
     loadMorePosts() {
         redditAPI.fetchPosts(this.state.currentSub, this.getLastPost().name)
             .then(posts => this.setState({
@@ -100,6 +108,7 @@ export default class PostsView extends React.Component<PostsProps, PostsState> {
             }))
     }
 
+    // Renders a loading prompt when arriving at the last post
     renderFooter = () => {
         if (!this.state.loading) return null
         return (
@@ -107,6 +116,7 @@ export default class PostsView extends React.Component<PostsProps, PostsState> {
         )
     }
 
+    // Function call when the user wants to update screen
     refreshView() {
         this.setState({ refreshing: true })
         redditAPI.fetchPosts(this.state.currentSub, undefined)
@@ -118,6 +128,7 @@ export default class PostsView extends React.Component<PostsProps, PostsState> {
             })
     }
 
+    // Renders a post in state
     renderPost = (item: Post) => <PostCell
         post={item}
         navigation={this.props.navigation}

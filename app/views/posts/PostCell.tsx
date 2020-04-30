@@ -9,12 +9,14 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import { FontAwesome } from '@expo/vector-icons';
 
+// Arguments that component will receive
 type Props = {
     post: Post,
     navigation: PostsNavProps,
     save: Function
 }
 
+// Component that will represent a post inside the Posts Screen
 const PostInfo = ({ post, navigation, save }: Props) => {
     const { title, author, submition, upvotes, comments, is_sticky, subreddit } = post
     const showPostInfo = () => {

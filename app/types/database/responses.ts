@@ -1,3 +1,6 @@
+// Types of the Responses from the Database
+// Made to comply types in application
+
 export interface SubredditResponse {
     subreddit: string
 }

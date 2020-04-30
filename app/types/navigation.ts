@@ -2,6 +2,9 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 import { Post, Subreddit } from './primitives'
 
+// Types for React Native TypeScript
+
+// Screens with their parameters
 export type RootParams = {
     Login: undefined,
     Register: undefined,

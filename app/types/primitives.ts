@@ -1,3 +1,5 @@
+// Types of the Model of the Application
+
 export type Post = {
     img: string | undefined, // URL of post, may not contain one
     thumbnail: Thumbnail | undefined // Preview of post,

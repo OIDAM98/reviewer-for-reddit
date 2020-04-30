@@ -1,11 +1,12 @@
 import React from 'react';
 import { Text, View, Button, ActivityIndicator, TextInput, KeyboardAvoidingView, Alert } from 'react-native';
 import { sub_styles } from '../styles';
-import { LoginProps, LoginState, RegisterState, RegisterProps } from '../../types/navigation';
+import { RegisterState, RegisterProps } from '../../types/navigation';
 import database from '../../api/database';
 import { UserResponse, Failure } from '../../types/database/responses';
 import { StackActions } from '@react-navigation/native';
 
+// Screen were the user will Register to use the application
 export default class RegisterView extends React.Component<RegisterProps, RegisterState> {
     state: Readonly<RegisterState> = {
         username: '',
@@ -15,6 +16,7 @@ export default class RegisterView extends React.Component<RegisterProps, Registe
     }
 
     componentDidMount() {
+        // Set the title of the Screen
         this.props.navigation.setOptions({ title: 'Register' })
     }
 
@@ -32,15 +34,19 @@ export default class RegisterView extends React.Component<RegisterProps, Registe
         this.setState({ password })
     }
 
+    // Ensures that neither password nor username has whitespaces and that password is at least of length 8
     validateForm = () => {
-        if (/\s/.test(this.state.username || this.state.password)) this.setState({ validState: false })
+        if (/\s/.test(this.state.username) || /\s/.test(this.state.password) || this.state.password.length < 8) this.setState({ validState: false })
         else this.setState({ validState: true })
     }
 
-    loginUser = () => {
+    // Registers user to the database
+    registerUser = () => {
         database.addUser(this.state.username, this.state.password)
             .then(res => {
+                // If the reponse of the database is the user's id
                 if ("id" in res) {
+                    // Notifies the user that it was added successfully
                     Alert.alert(
                         "Successfully registered!",
                         "You can now browse through Reddit and save posts as will!",
@@ -59,6 +65,7 @@ export default class RegisterView extends React.Component<RegisterProps, Registe
                         ]
                     )
                 }
+                // If there was an error registering the user
                 else {
                     const err = res as Failure
                     Alert.alert(
@@ -71,8 +78,11 @@ export default class RegisterView extends React.Component<RegisterProps, Registe
                             }
                         ]
                     )
+                    this.setState({ showProgress: false })
+
                 }
             })
+            // If there is an error making the petition
             .catch(err => {
                 Alert.alert(
                     "Network Error",
@@ -84,13 +94,15 @@ export default class RegisterView extends React.Component<RegisterProps, Registe
                         }
                     ]
                 )
+                this.setState({ showProgress: false })
             })
     }
 
     handleSubmit = () => {
+        // If the user has entered a valid username and password
         if (this.state.validState) {
             this.setState({ showProgress: true })
-            this.loginUser()
+            this.registerUser()
         }
         else {
             Alert.alert(
@@ -106,6 +118,7 @@ export default class RegisterView extends React.Component<RegisterProps, Registe
         }
     }
 
+    // If the user cancels then return to the Registering Screen
     handleCancel = () => {
         this.props.navigation.pop()
     }

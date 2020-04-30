@@ -12,6 +12,7 @@ import RegisterView from './app/views/login/RegisterView';
 
 const Stack = createStackNavigator();
 
+// The App component is the main Screen that will represent
 export default class App extends React.Component {
 
   state = {

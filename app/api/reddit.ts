@@ -1,9 +1,12 @@
 import { Post, Thumbnail } from "../types/primitives";
 import { replaceHTML } from "./htmlDecoder";
 
+// URL of Reddit
 const baseUrl = 'https://www.reddit.com';
+// This postfix allows to receive JSONS from Reddit
 const jsonPostfix = '.json';
 
+// Converts a Reddit Response to a Post
 function formatToPost(jsonPost: any): Post {
     const {
         title,
@@ -19,7 +22,9 @@ function formatToPost(jsonPost: any): Post {
         subreddit,
         thumbnail
     } = jsonPost
+    // Is the post is selftext
     if (is_self as boolean) {
+        // As post is selftext, it doesnot contain image or thumbnail
         const post: Post = {
             img: undefined,
             thumbnail: undefined,
@@ -42,6 +47,7 @@ function formatToPost(jsonPost: any): Post {
         let width: number | undefined = undefined
         let height: number | undefined = undefined
         let thumb_img: string | undefined = undefined
+        // If response contains the URL of the thumbnail
         if (pre_thumb || pre_thumb !== "self") {
             const pre_width = jsonPost.thumbnail_width as number
             const pre_height = jsonPost.thumbnail_height as number
@@ -50,6 +56,7 @@ function formatToPost(jsonPost: any): Post {
             thumb_img = pre_thumb
         }
         let thumbnail_obj: Thumbnail | undefined = undefined
+        // If the thumbnail parameters were created successfully
         if (thumb_img && width && height && thumb_img) {
             thumbnail_obj = {
                 width: width!,
@@ -78,6 +85,7 @@ function formatToPost(jsonPost: any): Post {
     }
 }
 
+// Gets posts from a response
 function getPosts(response: any): Array<Post> {
     const data: Array<any> = response.data.children
     return data
@@ -85,6 +93,8 @@ function getPosts(response: any): Array<Post> {
         .map((jsonPost: any) => formatToPost(jsonPost))
 }
 
+// Fetch posts from a specified subreddit
+// The after parameter is used for 'Unlimited' swipping in the PostsView
 const fetchPosts = async (subreddit: string, after: string | undefined) => {
     let url = `${baseUrl}/r/${subreddit}/${jsonPostfix}`
     if (after != undefined) {
@@ -96,6 +106,7 @@ const fetchPosts = async (subreddit: string, after: string | undefined) => {
     return posts
 }
 
+// Searches for a subreddit in Reddit
 const searchSubreddit = async (subreddit: string) => {
     const url = `${baseUrl}/subreddits/search/${jsonPostfix}?q=${subreddit}`
     const response = await fetch(url)

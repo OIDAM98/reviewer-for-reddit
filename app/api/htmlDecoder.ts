@@ -1,3 +1,4 @@
+// Replace all special characters that are inside an HTML
 const replaceHTML = (str: string) => {
     return str
         .replace(/&#x2F;/g, '/')
